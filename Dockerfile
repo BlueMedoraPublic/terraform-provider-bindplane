@@ -29,9 +29,9 @@ RUN \
         ./...
 
 # rename each binary and then zip them
-RUN mv terraform-provider-bindplane_linux_amd64 terraform-provider-bindplane && zip terraform-provider-bindplane_linux_amd64.zip terraform-provider-bindplane
-RUN mv terraform-provider-bindplane_darwin_amd64 terraform-provider-bindplane && zip terraform-provider-bindplane_darwin_amd64.zip terraform-provider-bindplane
-RUN mv terraform-provider-bindplane_windows_amd64.exe terraform-provider-bindplane.exe && zip terraform-provider-bindplane_windows_amd64.zip terraform-provider-bindplane.exe
+RUN mv terraform-provider-bindplane_linux_amd64 terraform-provider-bindplane_v${version} && zip terraform-provider-bindplane_linux_amd64_v${version}.zip terraform-provider-bindplane_v${version}
+RUN mv terraform-provider-bindplane_darwin_amd64 terraform-provider-bindplane_v${version} && zip terraform-provider-bindplane_darwin_amd64_v${version}.zip terraform-provider-bindplane_v${version}
+RUN mv terraform-provider-bindplane_windows_amd64.exe terraform-provider-bindplane_v${version}.exe && zip terraform-provider-bindplane_windows_amd64_v${version}.zip terraform-provider-bindplane_v${version}.exe
 
 # build the sha256sum file
 RUN ls | grep 'terraform-provider-bindplane_' | xargs -n1 sha256sum >> SHA256SUMS

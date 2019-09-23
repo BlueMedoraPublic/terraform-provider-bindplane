@@ -11,13 +11,13 @@ build: clean fmt
 
 	@docker build \
 	    --no-cache \
-	    --build-arg version=${VERSION} \
-	    -t btp:${VERSION} .
+	    --build-arg version=0.1.0 \
+	    -t btp:0.1.0 .
 
-	@docker create -ti --name artifacts btp:${VERSION} bash && \
-	    docker cp artifacts:/src/bindplane-terraform-provider/terraform-provider-bindplane_linux_amd64.zip artifacts/terraform-provider-bindplane_linux_amd64.zip && \
-	    docker cp artifacts:/src/bindplane-terraform-provider/terraform-provider-bindplane_darwin_amd64.zip artifacts/terraform-provider-bindplane_darwin_amd64.zip && \
-	    docker cp artifacts:/src/bindplane-terraform-provider/terraform-provider-bindplane_windows_amd64.zip artifacts/terraform-provider-bindplane_windows_amd64.zip && \
+	@docker create -ti --name artifacts btp:0.1.0 bash && \
+	    docker cp artifacts:/src/bindplane-terraform-provider/terraform-provider-bindplane_linux_amd64_v0.1.0.zip artifacts/terraform-provider-bindplane_linux_amd64_v0.1.0.zip && \
+	    docker cp artifacts:/src/bindplane-terraform-provider/terraform-provider-bindplane_darwin_amd64_v0.1.0.zip artifacts/terraform-provider-bindplane_darwin_amd64_v0.1.0.zip && \
+	    docker cp artifacts:/src/bindplane-terraform-provider/terraform-provider-bindplane_windows_amd64_v0.1.0.zip artifacts/terraform-provider-bindplane_windows_amd64_v0.1.0.zip && \
 	    docker cp artifacts:/src/bindplane-terraform-provider/SHA256SUMS artifacts/SHA256SUMS
 
 	# cleanup
