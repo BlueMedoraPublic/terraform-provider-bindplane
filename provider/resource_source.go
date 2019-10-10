@@ -164,6 +164,10 @@ func confDiff(d *schema.ResourceData, s sdk.SourceConfigGet) (bool, error) {
 	// force the source to rebuild if state differs from api
 	// response
 	stateConf, err := trim.Trim(d.Get("configuration").(string))
+	if err != nil {
+		return false, err
+	}
+
 	if string(apiConf) != stateConf {
 		return false, nil
 	}
