@@ -1,9 +1,12 @@
 terraform-provider-bindplane
 ==================
 
-- Bindplane: https://docs.bindplane.bluemedora.com/
-- Terraform: https://www.terraform.io
+* [bindplane.bluemedora.com](https://bindplane.bluemedora.com)
+* [terraform.io](https://www.terraform.io)
+* [Bindplane API Documentation](https://docs.bindplane.bluemedora.com/reference#introduction)
 
+[![Build Status](https://travis-ci.com/BlueMedoraPublic/terraform-provider-bindplane.svg?branch=master)](https://travis-ci.com/BlueMedoraPublic/terraform-provider-bindplane)
+[![Go Report Card](https://goreportcard.com/badge/github.com/BlueMedoraPublic/terraform-provider-bindplane)](https://goreportcard.com/report/github.com/BlueMedoraPublic/terraform-provider-bindplane)
 
 Usage Requirements
 ------------
