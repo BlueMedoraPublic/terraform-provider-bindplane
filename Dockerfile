@@ -32,10 +32,9 @@ RUN \
     unzip terraform_0.12.10_linux_amd64.zip && \
     mv terraform /usr/bin
 
-# install terraform-provider-bindplane provider
-RUN \
-    mkdir -p /src/terraform-provider-bindplane/example/basic/.terraform/plugins/linux_amd64 && \
-    cp terraform-provider-bindplane_linux_amd64 /src/terraform-provider-bindplane/example/basic/.terraform/plugins/linux_amd64/terraform-provider-bindplane_v${version}
+# install terraform-provider-bindplane provider and overwrite
+# any possible installs already in place
+RUN yes | cp -rf terraform-provider-bindplane_linux_amd64 /src/terraform-provider-bindplane/example/basic/terraform-provider-bindplane
 
 # smoke test: make sure init and validate works
 WORKDIR /src/terraform-provider-bindplane/example/basic
