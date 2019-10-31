@@ -34,8 +34,8 @@ RUN \
 
 # install terraform-provider-bindplane provider
 RUN \
-    mkdir -p ~/.terraform.d/plugins && \
-    cp terraform-provider-bindplane_linux_amd64 ~/.terraform.d/plugins/terraform-provider-bindplane_v${version}
+    mkdir -p /src/terraform-provider-bindplane/example/basic/.terraform/plugins/linux_amd64 && \
+    cp terraform-provider-bindplane_linux_amd64 /src/terraform-provider-bindplane/example/basic/.terraform/plugins/linux_amd64/terraform-provider-bindplane_v${version}
 
 # smoke test: make sure init and validate works
 WORKDIR /src/terraform-provider-bindplane/example/basic
