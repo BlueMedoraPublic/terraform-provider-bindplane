@@ -15,10 +15,7 @@ build: clean fmt
 	    -t btp:0.1.0 .
 
 	@docker create -ti --name artifacts btp:0.1.0 bash && \
-	    docker cp artifacts:/terraform-provider-bindplane/terraform-provider-bindplane_linux_amd64_v0.1.0.zip artifacts/terraform-provider-bindplane_linux_amd64_v0.1.0.zip && \
-	    docker cp artifacts:/terraform-provider-bindplane/terraform-provider-bindplane_darwin_amd64_v0.1.0.zip artifacts/terraform-provider-bindplane_darwin_amd64_v0.1.0.zip && \
-	    docker cp artifacts:/terraform-provider-bindplane/terraform-provider-bindplane_windows_amd64_v0.1.0.zip artifacts/terraform-provider-bindplane_windows_amd64_v0.1.0.zip && \
-	    docker cp artifacts:/terraform-provider-bindplane/SHA256SUMS artifacts/SHA256SUMS
+		docker cp artifacts:/terraform-provider-bindplane/artifacts/. artifacts/
 
 	# cleanup
 	@docker rm -fv artifacts &> /dev/null
