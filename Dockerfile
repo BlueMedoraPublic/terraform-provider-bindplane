@@ -2,15 +2,15 @@
 #
 FROM golang:1.12
 
-WORKDIR /src/terraform-provider-bindplane
+WORKDIR /terraform-provider-bindplane
 
 ARG version
 
 RUN \
     apt-get update >> /dev/null && \
-    apt-get install -y golint zip unzip wget
+    apt-get install -y zip unzip wget
 
-ADD . /src/terraform-provider-bindplane
+ADD . /terraform-provider-bindplane
 
 # compile with gox
 RUN go get github.com/mitchellh/gox
@@ -34,15 +34,15 @@ RUN \
 
 # install terraform-provider-bindplane provider and overwrite
 # any possible installs already in place
-RUN yes | cp -rf terraform-provider-bindplane_linux_amd64 /src/terraform-provider-bindplane/example/basic/terraform-provider-bindplane
+RUN yes | cp -rf terraform-provider-bindplane_linux_amd64 /terraform-provider-bindplane/example/basic/terraform-provider-bindplane
 
 # smoke test: make sure init and validate works
-WORKDIR /src/terraform-provider-bindplane/example/basic
+WORKDIR /terraform-provider-bindplane/example/basic
 RUN /usr/bin/terraform init
 RUN /usr/bin/terraform validate
 
 # rename each binary and then zip them
-WORKDIR /src/terraform-provider-bindplane
+WORKDIR /terraform-provider-bindplane
 RUN mv terraform-provider-bindplane_linux_amd64 terraform-provider-bindplane_v${version} && zip terraform-provider-bindplane_linux_amd64_v${version}.zip terraform-provider-bindplane_v${version}
 RUN mv terraform-provider-bindplane_darwin_amd64 terraform-provider-bindplane_v${version} && zip terraform-provider-bindplane_darwin_amd64_v${version}.zip terraform-provider-bindplane_v${version}
 RUN mv terraform-provider-bindplane_windows_amd64.exe terraform-provider-bindplane_v${version}.exe && zip terraform-provider-bindplane_windows_amd64_v${version}.zip terraform-provider-bindplane_v${version}.exe
