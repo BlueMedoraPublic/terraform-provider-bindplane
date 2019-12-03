@@ -12,9 +12,9 @@ build: clean fmt
 	@docker build \
 		--no-cache \
 	    --build-arg version=${VERSION} \
-	    -t btp:0.1.0 .
+	    -t btp:${VERSION} .
 
-	@docker create -ti --name artifacts btp:0.1.0 bash && \
+	@docker create -ti --name artifacts btp:${VERSION} bash && \
 		docker cp artifacts:/terraform-provider-bindplane/artifacts/. artifacts/
 
 	# cleanup
