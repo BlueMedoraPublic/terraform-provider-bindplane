@@ -1,9 +1,9 @@
 module github.com/BlueMedoraPublic/terraform-provider-bindplane
 
-go 1.12
+go 1.14
 
 require (
-	github.com/BlueMedoraPublic/bpcli v1.2.0
+	github.com/BlueMedoraPublic/bpcli v1.3.0-alpha
 	github.com/hashicorp/terraform v0.12.3
 	github.com/pkg/errors v0.8.1
 	golang.org/x/crypto v0.0.0-20190923035154-9ee001bba392 // indirect
