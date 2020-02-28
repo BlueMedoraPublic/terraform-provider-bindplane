@@ -6,7 +6,7 @@ VERSION := $(shell cat main.go | grep "const version" | cut -c 17- | tr -d '"')
 
 $(shell mkdir -p artifacts)
 
-build: clean fmt
+build: clean
 	$(info building terraform-provider-bindplane ${VERSION})
 
 	@docker build \
