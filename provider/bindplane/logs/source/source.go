@@ -2,8 +2,6 @@ package source
 
 import (
     "github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/common"
-
-    "github.com/pkg/errors"
 )
 
 // Create creates a bindplane log source config and
@@ -31,7 +29,7 @@ func Read(id string) error {
 
 	_, err = bp.GetLogSourceConfig(id)
     if err != nil {
-        return errors.Wrap(err, "hello!!")
+        return err
     }
 	return nil
 }
