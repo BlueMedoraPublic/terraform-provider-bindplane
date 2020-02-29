@@ -11,6 +11,7 @@ func Provider() *schema.Provider {
 			"bindplane_credential": resourceCredential(),
 			"bindplane_source":     resourceSource(),
 			"bindplane_collector":  resourceCollector(),
+			"bindplane_log_source": resourceLogSource(),
 		},
 	}
 }
