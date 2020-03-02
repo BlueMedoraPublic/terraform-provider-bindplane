@@ -1,8 +1,10 @@
 resource "bindplane_log_source" "mysql" {
+  name = "mysql-terraform"
+  source_type_id = "mysql"
+  source_version = "2.0.0"
+
   configuration = <<CONFIGURATION
 {
-"name": "mysql-terraform",
-"configuration": {
   "mysql_error": true,
   "error_log_path": "/var/log/mysql/mysqld.log",
   "mysql_slow_query": true,
@@ -10,13 +12,8 @@ resource "bindplane_log_source" "mysql" {
   "mysql_general": false,
   "general_log_path": "/var/log/mysql/general.log",
   "read_from_head": false
-},
-"source_type_id": "mysql",
-"source_version": "2.0.0",
-"custom_template": ""
 }
 CONFIGURATION
-
 }
 
 // service account json is pulled from gcp secret manager
@@ -36,7 +33,7 @@ CONFIGURATION
 
 }
 
-resource "bindplane_log_template" "mysql_prod" {
+/*resource "bindplane_log_template" "mysql_prod" {
     name = "template-terraform"
 
     source_config_ids = [
@@ -46,3 +43,4 @@ resource "bindplane_log_template" "mysql_prod" {
     destination_config_id =  bindplane_log_destination.stackdriver.id
     agent_group = ""
 }
+*/
