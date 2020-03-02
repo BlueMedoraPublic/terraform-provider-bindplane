@@ -13,6 +13,7 @@ func Provider() *schema.Provider {
 			"bindplane_collector":  resourceCollector(),
 			"bindplane_log_source": resourceLogSource(),
 			"bindplane_log_destination": resourceLogDestination(),
+			"bindplane_log_template": resourceLogTemplate(),
 		},
 	}
 }

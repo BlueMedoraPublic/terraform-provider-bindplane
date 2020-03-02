@@ -35,3 +35,14 @@ resource "bindplane_log_destination" "stackdriver" {
 CONFIGURATION
 
 }
+
+resource "bindplane_log_template" "mysql_prod" {
+    name = "template-terraform"
+
+    source_config_ids = [
+        bindplane_log_source.mysql.id
+    ]
+
+    destination_config_id =  bindplane_log_destination.stackdriver.id
+    agent_group = ""
+}
