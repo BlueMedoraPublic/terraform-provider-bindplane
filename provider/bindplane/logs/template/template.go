@@ -7,7 +7,7 @@ import (
 
 // Create creates a bindplane log template and
 // returns the id
-func Create(t sdk.LogTemplateCreate) (string, error) {
+func Create(t sdk.LogTemplate) (string, error) {
 	bp, err := common.New()
 	if err != nil {
 		return "", err
@@ -18,14 +18,12 @@ func Create(t sdk.LogTemplateCreate) (string, error) {
 }
 
 // Read returns nil if the log template exists
-func Read(id string) error {
+func Read(id string) (sdk.LogTemplate, error) {
 	bp, err := common.New()
 	if err != nil {
-		return err
+		return sdk.LogTemplate{}, err
 	}
-
-	_, err = bp.GetLogTemplate(id)
-    return err
+	return bp.GetLogTemplate(id)
 }
 
 // Delete returns nil if the log template is deleted

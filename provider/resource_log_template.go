@@ -46,7 +46,7 @@ func resourceLogTemplate() *schema.Resource {
 }
 
 func resourceLogTemplateCreate(d *schema.ResourceData, m interface{}) error {
-	t := sdk.LogTemplateCreate{}
+	t := sdk.LogTemplate{}
 	t.Name = d.Get("name").(string)
 	t.DestinationConfigID = d.Get("destination_config_id").(string)
 	t.AgentGroup = d.Get("agent_group").(string)
@@ -63,18 +63,31 @@ func resourceLogTemplateCreate(d *schema.ResourceData, m interface{}) error {
 	if err != nil {
 		return err
 	}
+
 	d.SetId(x)
 	return resourceLogTemplateRead(d, m)
 }
 
 func resourceLogTemplateRead(d *schema.ResourceData, m interface{}) error {
-	if err := template.Read(d.Id()); err != nil {
+	t, err := template.Read(d.Id())
+	if err != nil {
 		if strings.Contains(strings.ToLower(err.Error()), "no template with id") {
 			d.SetId("")
 			return nil
 		}
 		return err
 	}
+
+	d.Set("name", t.Name)
+	d.Set("destination_config_id", t.DestinationConfigID)
+	d.Set("agent_group", t.AgentGroup)
+
+	a := make([]interface{}, len(t.SourceConfigIds))
+	for i, str := range t.SourceConfigIds {
+		a[i] = str
+	}
+	d.Set("source_config_ids", a)
+
 	return nil
 }
 
