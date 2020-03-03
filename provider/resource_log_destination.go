@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/logs/destination"
 
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -62,17 +61,17 @@ func resourceLogDestinationCreate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	x, err := destination.Create(config)
+	x, err := bp.CreateLogDestConfig(config)
 	if err != nil {
 		return err
 	}
 
-	d.SetId(x)
+	d.SetId(x.ID)
 	return resourceLogDestinationRead(d, m)
 }
 
 func resourceLogDestinationRead(d *schema.ResourceData, m interface{}) error {
-	dest, err := destination.Read(d.Id())
+	dest, err := bp.GetLogDestConfig(d.Id())
 	if err != nil {
 		if strings.Contains(strings.ToLower(err.Error()), "no destination config with id") {
 			d.SetId("")
@@ -88,7 +87,7 @@ func resourceLogDestinationRead(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceLogDestinationDelete(d *schema.ResourceData, m interface{}) error {
-	if err := destination.Delete(d.Id()); err != nil {
+	if err := bp.DelLogDestConfig(d.Id()); err != nil {
 		return err
 	}
 	return resourceLogDestinationRead(d, m)

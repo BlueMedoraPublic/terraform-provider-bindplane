@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/logs/template"
 
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -59,17 +58,17 @@ func resourceLogTemplateCreate(d *schema.ResourceData, m interface{}) error {
 		}
 	}
 
-	x, err := template.Create(t)
+	x, err := bp.CreateLogTemplate(t)
 	if err != nil {
 		return err
 	}
 
-	d.SetId(x)
+	d.SetId(x.ID)
 	return resourceLogTemplateRead(d, m)
 }
 
 func resourceLogTemplateRead(d *schema.ResourceData, m interface{}) error {
-	t, err := template.Read(d.Id())
+	t, err := bp.GetLogTemplate(d.Id())
 	if err != nil {
 		if strings.Contains(strings.ToLower(err.Error()), "no template with id") {
 			d.SetId("")
@@ -92,7 +91,7 @@ func resourceLogTemplateRead(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceLogTemplateDelete(d *schema.ResourceData, m interface{}) error {
-	if err := template.Delete(d.Id()); err != nil {
+	if err := bp.DeleteLogTemplate(d.Id()); err != nil {
 		return err
 	}
 	return resourceLogTemplateRead(d, m)

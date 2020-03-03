@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/logs/source"
 	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/util/compare"
 
 	"github.com/hashicorp/terraform/helper/schema"
@@ -72,17 +71,17 @@ func resourceLogSourceCreate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	x, err := source.Create(config)
+	x, err := bp.CreateLogSourceConfig(config)
 	if err != nil {
 		return err
 	}
 
-	d.SetId(x)
+	d.SetId(x.ID)
 	return resourceLogSourceRead(d, m)
 }
 
 func resourceLogSourceRead(d *schema.ResourceData, m interface{}) error {
-	s, err := source.Read(d.Id())
+	s, err := bp.GetLogSourceConfig(d.Id())
 	if err != nil {
 		if strings.Contains(strings.ToLower(err.Error()), "no source config with id") {
 			d.SetId("")
@@ -109,7 +108,7 @@ func resourceLogSourceRead(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceLogSourceDelete(d *schema.ResourceData, m interface{}) error {
-	if err := source.Delete(d.Id()); err != nil {
+	if err := bp.DeleteLogSourceConfig(d.Id()); err != nil {
 		return err
 	}
 	return resourceLogSourceRead(d, m)
