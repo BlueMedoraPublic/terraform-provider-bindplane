@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/util/compare"
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/logs/source"
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
+	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/logs/source"
+	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/util/compare"
 
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -21,12 +21,12 @@ func resourceLogSource() *schema.Resource {
 		},
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type: schema.TypeString,
+				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
 			"source_type_id": {
-				Type: schema.TypeString,
+				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
@@ -37,19 +37,19 @@ func resourceLogSource() *schema.Resource {
 			 and re-apply.
 			*/
 			"source_version": {
-				Type: schema.TypeString,
+				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
 			/*
-			 leaving custom_template un implemented as I believe it is
-			 not needed with terraform. If enabled, make sure to to add
-			 d.Set("source_version", s.Source.Version) to resourceLogSourceRead
-			"custom_template": {
-				Type: schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-			},*/
+				 leaving custom_template un implemented as I believe it is
+				 not needed with terraform. If enabled, make sure to to add
+				 d.Set("source_version", s.Source.Version) to resourceLogSourceRead
+				"custom_template": {
+					Type: schema.TypeString,
+					Optional: true,
+					ForceNew: true,
+				},*/
 			"configuration": {
 				Type:     schema.TypeString,
 				Required: true,
@@ -61,7 +61,7 @@ func resourceLogSource() *schema.Resource {
 
 func resourceLogSourceCreate(d *schema.ResourceData, m interface{}) error {
 	config := sdk.LogSourceConfig{
-		Name:		   d.Get("name").(string),
+		Name:          d.Get("name").(string),
 		SourceTypeID:  d.Get("source_type_id").(string),
 		SourceVersion: d.Get("source_version").(string),
 		Configuration: make(map[string]interface{}),

@@ -1,8 +1,8 @@
 package destination
 
 import (
-    "github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/common"
-    "github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
+	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
+	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/common"
 )
 
 // Create creates a bindplane log destination config and

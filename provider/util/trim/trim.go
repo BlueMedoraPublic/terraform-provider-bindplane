@@ -12,7 +12,7 @@ import (
 func Trim(s string) (string, error) {
 	s, err := removeWhiteSpace(s)
 	if err != nil {
-		return "", errors.Wrap(err, "time.Trim() failed to remove whitespace from '" + s + "'")
+		return "", errors.Wrap(err, "time.Trim() failed to remove whitespace from '"+s+"'")
 	}
 
 	s = removeNewLine(s)
@@ -24,7 +24,7 @@ func removeWhiteSpace(s string) (string, error) {
 	if s == "" {
 		return "", nil
 	}
-	
+
 	buffer := new(bytes.Buffer)
 	err := json.Compact(buffer, []byte(s))
 	if err != nil {

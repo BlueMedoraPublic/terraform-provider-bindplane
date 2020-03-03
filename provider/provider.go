@@ -8,12 +8,12 @@ import (
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		ResourcesMap: map[string]*schema.Resource{
-			"bindplane_credential": resourceCredential(),
-			"bindplane_source":     resourceSource(),
-			"bindplane_collector":  resourceCollector(),
-			"bindplane_log_source": resourceLogSource(),
+			"bindplane_credential":      resourceCredential(),
+			"bindplane_source":          resourceSource(),
+			"bindplane_collector":       resourceCollector(),
+			"bindplane_log_source":      resourceLogSource(),
 			"bindplane_log_destination": resourceLogDestination(),
-			"bindplane_log_template": resourceLogTemplate(),
+			"bindplane_log_template":    resourceLogTemplate(),
 		},
 	}
 }

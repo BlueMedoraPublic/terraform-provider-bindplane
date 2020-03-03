@@ -3,8 +3,8 @@ package provider
 import (
 	"strings"
 
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/logs/template"
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
+	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/logs/template"
 
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -26,8 +26,8 @@ func resourceLogTemplate() *schema.Resource {
 			"source_config_ids": {
 				// source_config_ids is a list and looks like this:
 				// source_type_ids = [a, b, c]
-				Type: schema.TypeSet,
-				Elem: &schema.Schema{Type: schema.TypeString},
+				Type:     schema.TypeSet,
+				Elem:     &schema.Schema{Type: schema.TypeString},
 				Optional: true,
 				ForceNew: true,
 			},

@@ -1,11 +1,11 @@
 package provider
 
 import (
-	"strings"
 	"encoding/json"
+	"strings"
 
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/logs/destination"
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
+	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/logs/destination"
 
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -20,12 +20,12 @@ func resourceLogDestination() *schema.Resource {
 		},
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type: schema.TypeString,
+				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
 			"destination_type_id": {
-				Type: schema.TypeString,
+				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
@@ -36,7 +36,7 @@ func resourceLogDestination() *schema.Resource {
 			 and re-apply.
 			*/
 			"destination_version": {
-				Type: schema.TypeString,
+				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
@@ -54,7 +54,7 @@ func resourceLogDestinationCreate(d *schema.ResourceData, m interface{}) error {
 		Name:               d.Get("name").(string),
 		DestinationTypeID:  d.Get("destination_type_id").(string),
 		DestinationVersion: d.Get("destination_version").(string),
-		Configuration: make(map[string]interface{}),
+		Configuration:      make(map[string]interface{}),
 	}
 
 	c := []byte(d.Get("configuration").(string))
