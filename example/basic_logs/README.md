@@ -1,8 +1,11 @@
 # logs example
 
-This example will:
-- Create a log source config
-- Create a log destination  config
+## goal
+
+1) define a source config
+2) define a destination config
+3) create a template that is paired with the source and destination config
+4) deploy a compute instance with the log agent pre configured with the log template
 
 ## setup
 
@@ -14,20 +17,26 @@ BindPlane to Stackdriver.
 ```
 data "google_secret_manager_secret_version" "bindplane_svc_act" {
   provider = google-beta
-  project = "bpcli-dev"
+  project = var.project
   secret = "bindplane-service-account"
   version = 1
 }
 ```
+
 ## usage
+
+Set env
+```
+export PROJECT=<your gcp project id>
+```
 
 Deploy
 ```
 terraform init
-terraform apply
+terraform apply -var "project=${PROJECT}"
 ```
 
 Cleanup
 ```
-terraform destroy
+terraform destroy -var "project=${PROJECT}"
 ```
