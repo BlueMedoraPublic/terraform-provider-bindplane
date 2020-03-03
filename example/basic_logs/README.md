@@ -27,17 +27,26 @@ data "google_secret_manager_secret_version" "bindplane_svc_act" {
 
 Set env
 ```
-export BINDPLANE_API_KEY=<your api key>
+export BINDPLANE_API_KEY=    <your api key>
+export BINDPLANE_COMPANY_ID= <your company idd>
+export BINDPLANE_SECRET_KEY= <your secret key>
+
 export PROJECT=<your gcp project id>
 ```
 
 Deploy
 ```
 terraform init
-terraform apply -var "project=${PROJECT}"
+terraform apply \
+    -var "project=${PROJECT}" \
+    -var "company_id=${BINDPLANE_COMPANY_ID}" \
+    -var "secret_key=${BINDPLANE_SECRET_KEY}"
 ```
 
 Cleanup
 ```
-terraform destroy -var "project=${PROJECT}"
+terraform destroy \
+    -var "project=${PROJECT}" \
+    -var "company_id=${BINDPLANE_COMPANY_ID}" \
+    -var "secret_key=${BINDPLANE_SECRET_KEY}"
 ```

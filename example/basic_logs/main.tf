@@ -2,11 +2,38 @@ variable "project" {
   description = "gcp project id"
 }
 
+variable "company_id" {
+  description = "bindplane company id"
+}
+
+variable "secret_key" {
+  description = "bindplane secret key"
+}
+
 data "google_secret_manager_secret_version" "bindplane_svc_act" {
   provider = google-beta
   project = var.project
   secret = "bindplane-service-account"
   version = 1
+}
+
+/*
+
+bpcli logs destination type parameters \
+  --destination-type-id stackdriver
+
+*/
+resource "bindplane_log_destination" "stackdriver" {
+  name = "stackdriver-terraform"
+  destination_type_id = "stackdriver"
+  destination_version = "1.3.2"
+  configuration = <<CONFIGURATION
+{
+  "credentials": ${data.google_secret_manager_secret_version.bindplane_svc_act.secret_data},
+  "location": "us-west1"
+}
+CONFIGURATION
+
 }
 
 /*
@@ -37,26 +64,7 @@ resource "bindplane_log_source" "mysql" {
 CONFIGURATION
 }
 
-/*
-
-bpcli logs destination type parameters \
-  --destination-type-id stackdriver
-
-*/
-resource "bindplane_log_destination" "stackdriver" {
-  name = "stackdriver-terraform"
-  destination_type_id = "stackdriver"
-  destination_version = "1.3.2"
-  configuration = <<CONFIGURATION
-{
-  "credentials": ${data.google_secret_manager_secret_version.bindplane_svc_act.secret_data},
-  "location": "us-west1"
-}
-CONFIGURATION
-
-}
-
-resource "bindplane_log_template" "mysql_prod" {
+resource "bindplane_log_template" "mysql" {
     name = "template-terraform"
     source_config_ids = [
         bindplane_log_source.mysql.id
@@ -65,8 +73,20 @@ resource "bindplane_log_template" "mysql_prod" {
     agent_group = ""
 }
 
-data "bindplane_agent_install_cmd" "centos7" {
-  platform = "centos7"
+resource "random_id" "mysql_password" {
+  byte_length = 8
+}
+
+data "template_file" "mysql" {
+  template = file("${path.module}/../../scripts/mysql_install_logs.sh.tpl")
+  vars = {
+    database   = "demo"
+    mysql_user = "demo"
+    mysql_pass = random_id.mysql_password.hex
+    company_id = var.company_id
+    secret_key = var.secret_key
+    template_id = bindplane_log_template.mysql.id
+  }
 }
 
 resource "google_compute_instance" "default" {
@@ -77,7 +97,7 @@ resource "google_compute_instance" "default" {
 
   boot_disk {
     initialize_params {
-      image = "centos-cloud/centos-7"
+      image = "ubuntu-os-cloud/ubuntu-minimal-1804-lts"
     }
   }
 
@@ -88,5 +108,5 @@ resource "google_compute_instance" "default" {
     }
   }
 
-  metadata_startup_script = data.bindplane_agent_install_cmd.centos7.command
+  metadata_startup_script = "${data.template_file.mysql.rendered};"
 }
