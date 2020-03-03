@@ -2,19 +2,18 @@ package destination
 
 import (
     "github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/common"
-
-    "github.com/pkg/errors"
+    "github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 )
 
 // Create creates a bindplane log destination config and
 // returns the id
-func Create(payload []byte) (string, error) {
+func Create(config sdk.LogDestConfig) (string, error) {
 	bp, err := common.New()
 	if err != nil {
 		return "", err
 	}
 
-	x, err := bp.CreateLogDestConfig(payload)
+	x, err := bp.CreateLogDestConfig(config)
 	if err != nil {
 		return "", err
 	}
@@ -23,17 +22,13 @@ func Create(payload []byte) (string, error) {
 }
 
 // Read returns nil if the log destination exists
-func Read(id string) error {
+func Read(id string) (sdk.LogDestConfig, error) {
 	bp, err := common.New()
 	if err != nil {
-		return err
+		return sdk.LogDestConfig{}, err
 	}
 
-	_, err = bp.GetLogDestConfig(id)
-    if err != nil {
-        return errors.Wrap(err, "hello!!")
-    }
-	return nil
+	return bp.GetLogDestConfig(id)
 }
 
 // Delete returns nil if the log destination config is deleted
