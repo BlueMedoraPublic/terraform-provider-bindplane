@@ -27,6 +27,7 @@ data "google_secret_manager_secret_version" "bindplane_svc_act" {
 
 Set env
 ```
+export BINDPLANE_API_KEY=<your api key>
 export PROJECT=<your gcp project id>
 ```
 
