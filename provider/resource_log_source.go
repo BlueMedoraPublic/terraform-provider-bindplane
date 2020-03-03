@@ -9,7 +9,6 @@ import (
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/pkg/errors"
 )
 
 func resourceLogSource() *schema.Resource {
@@ -31,14 +30,22 @@ func resourceLogSource() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
+			/*
+			 source version is placed into the statefile however the provider
+			 will not attempt to detect configuration drift on the API side.
+			 if a version upgrade is desired, change it in your terraform code
+			 and re-apply.
+			*/
 			"source_version": {
 				Type: schema.TypeString,
 				Required: true,
 				ForceNew: true,
 			},
-			// leaving custom_template un implemented as I believe it is
-			//not needed with terraform
-			/*"custom_template": {
+			/*
+			 leaving custom_template un implemented as I believe it is
+			 not needed with terraform. If enabled, make sure to to add
+			 d.Set("source_version", s.Source.Version) to resourceLogSourceRead
+			"custom_template": {
 				Type: schema.TypeString,
 				Optional: true,
 				ForceNew: true,
@@ -53,15 +60,16 @@ func resourceLogSource() *schema.Resource {
 }
 
 func resourceLogSourceCreate(d *schema.ResourceData, m interface{}) error {
-	config := sdk.LogSourceConfig{}
-	config.Name = d.Get("name").(string)
-	config.SourceTypeID = d.Get("source_type_id").(string)
-	config.SourceVersion = d.Get("source_version").(string)
+	config := sdk.LogSourceConfig{
+		Name:		   d.Get("name").(string),
+		SourceTypeID:  d.Get("source_type_id").(string),
+		SourceVersion: d.Get("source_version").(string),
+		Configuration: make(map[string]interface{}),
+	}
 
-	// convert the configuration (serialized json) to map[string]interface{}
 	c := []byte(d.Get("configuration").(string))
 	if err := json.Unmarshal(c, &config.Configuration); err != nil {
-		return errors.Wrap(err, "failed to marshal configuration field into sdk.LogSourceConfig.Configuration (map[string]interface{})")
+		return err
 	}
 
 	x, err := source.Create(config)
@@ -85,12 +93,12 @@ func resourceLogSourceRead(d *schema.ResourceData, m interface{}) error {
 
 	same, err := logSourceConfigDiff(d, s)
 	if err != nil {
-		return errors.Wrap(err, "failed to compare local config to api config")
+		return err
 	}
 
 	// if state differs from api, unset local copy to force resource
 	// replacement
-	if same == false {
+	if !same {
 		d.Set("configuration", "")
 	}
 
@@ -108,19 +116,15 @@ func resourceLogSourceDelete(d *schema.ResourceData, m interface{}) error {
 }
 
 func logSourceConfigDiff(d *schema.ResourceData, apiConf sdk.LogSourceConfig) (bool, error) {
-	stateConf := sdk.LogSourceConfig{}
 	stateConfBytes := []byte(d.Get("configuration").(string))
-
-	// json.Unmarshal will fail if state configuration is empty
 	if len(stateConfBytes) == 0 {
 		return false, nil
 	}
 
+	stateConf := sdk.LogSourceConfig{}
 	if err := json.Unmarshal(stateConfBytes, &stateConf.Configuration); err != nil {
 		return false, err
 	}
 
-	a := stateConf.Configuration
-	b := apiConf.Configuration
-	return compare.MapStringInterface(a, b), nil
+	return compare.MapStringInterface(stateConf.Configuration, apiConf.Configuration), nil
 }
