@@ -1,3 +1,14 @@
+variable "project" {
+  description = "gcp project id"
+}
+
+data "google_secret_manager_secret_version" "bindplane_svc_act" {
+  provider = google-beta
+  project = var.project
+  secret = "bindplane-service-account"
+  version = 1
+}
+
 /*
 
 bpcli logs source type parameters \
@@ -45,11 +56,37 @@ CONFIGURATION
 
 }
 
-/*resource "bindplane_log_template" "mysql_prod" {
+resource "bindplane_log_template" "mysql_prod" {
     name = "template-terraform"
     source_config_ids = [
         bindplane_log_source.mysql.id
     ]
     destination_config_id =  bindplane_log_destination.stackdriver.id
     agent_group = ""
-}*/
+}
+
+data "bindplane_agent_install_cmd" "centos7" {
+  platform = "centos7"
+}
+
+resource "google_compute_instance" "default" {
+  name         = "terraform-mysql"
+  machine_type = "g1-small"
+  zone         = "us-central1-a"
+  project      = var.project
+
+  boot_disk {
+    initialize_params {
+      image = "centos-cloud/centos-7"
+    }
+  }
+
+  network_interface {
+    network = "default"
+    access_config {
+      // Ephemeral IP
+    }
+  }
+
+  metadata_startup_script = data.bindplane_agent_install_cmd.centos7.command
+}
