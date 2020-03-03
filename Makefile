@@ -30,7 +30,7 @@ fmt:
 	go fmt ./...
 
 quick:
-	$(shell env CGO_ENABLED=0 go build -a -ldflags '-w -extldflags "-static"')
+	$(shell env CGO_ENABLED=0 go build -ldflags '-w -extldflags "-static"')
 
 clean:
 	$(shell rm -rf artifacts/*)
