@@ -1,28 +1,42 @@
-terraform-provider-bindplane
+Usage
 ==================
 
-- Bindplane: https://docs.bindplane.bluemedora.com/
-- Terraform: https://www.terraform.io
+- [Requirements](#requirements)
+- [Terraform Apply](#terraform-apply)
+- [Example Configuration](#example-configuration)
 
-
-Usage Requirements
+Requirements
 ------------
 
 - [Terraform](https://www.terraform.io/downloads.html) 0.12.x
+- `terraform-provider-bindplane` (see README.md Installation)
+- [bpcli](https://github.com/BlueMedoraPublic/bpcli) (optional)
 
-Installation
+`bpcli` is optional, but useful for retrieving required information
+such as configuration requirements or source type ids.
+
+Terraform Apply
 ------------
 
-1) download the latest release for your platform
-2) unzip the plugin
-3) copy plugin to `~/.terraform.d/plugins` For Mac / Linux and `%APPDATA%\terraform.d\plugins` for Windows
+Using the provider is very simple, the only requirement is
+setting `BINDPLANE_API_KEY` in the execution environment
 
-Example Code
+```sh
+export BINDPLANE_API_KEY=<your api key>
+terraform init
+terraform plan
+terraform apply
+```
+
+
+Example Configuration
 ------------
 
-See `USAGE.md` and `examples/` for detailed examples
+This example is not designed for production use. Detailed
+examples can be found in the `examples/` directory of this repo.
 
-Create a `bindplane_credential` resource
+
+Create a Postgres `bindplane_credential` resource
 ```terraform
 resource "bindplane_credential" "postgres" {
   configuration = <<CONFIGURATION
@@ -35,11 +49,10 @@ resource "bindplane_credential" "postgres" {
   }
 }
 CONFIGURATION
-
 }
 ```
 
-Create a `bindplane_source` resource
+Create a Postgres `bindplane_source` resource
 ```terraform
 resource "bindplane_source" "postgres_app_db_0" {
   provisioning_timeout = 120
@@ -67,46 +80,7 @@ resource "bindplane_source" "postgres_app_db_0" {
     "ssl_config": "No SSL"
 }
 CONFIGURATION
-
 }
 ```
 
-Usage
-------------
-
-Using the provider is very simple, the only requirement is
-setting `BINDPLANE_API_KEY` in the execution environment
-
-```sh
-export BINDPLANE_API_KEY=<your api key>
-terraform init
-terraform plan
-terraform apply
-```
-
-See `USAGE.md` and `examples/` for detailed examples
-
-Building The Provider
----------------------
-
-Install the following:
-- [Make](https://www.gnu.org/software/make/)
-- [Docker](https://www.docker.com/) 18.x (primary build method)
-- [Go](https://golang.org/doc/install) 1.11+ (alternative build method)
-
-Clone repository anywhere on your system (outside of your GOPATH),
-this repository uses go modules, and does not need to be in the GOPATH
-
-Enter the provider directory and build the provider with Docker
-
-```sh
-make test
-make
-```
-
-Build artifacts can be found in the `artifacts/` directory
-
-If you wish to build without Docker
-```sh
-make quick
-```
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
