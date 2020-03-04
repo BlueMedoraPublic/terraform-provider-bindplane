@@ -15,6 +15,8 @@ github.com/BlueMedoraPublic/bpcli v1.2.1 h1:mPSG10AWDLFeRaNevbv8yTr1ZdBU4JVoSoPZ
 github.com/BlueMedoraPublic/bpcli v1.2.1/go.mod h1:iHm+GBHFBgqiPf+nVwRUoHhGLRDe8kB9NNeczxcP330=
 github.com/BlueMedoraPublic/bpcli v1.3.0-alpha h1:HciyCwIzjxvVD0l6Bo7zB56GANiudfwHidrWM+TcPIQ=
 github.com/BlueMedoraPublic/bpcli v1.3.0-alpha/go.mod h1:ArSkYH9iX/+xgc2lj4lVQ3kMgSYbNVVYqQSuVP1a1pk=
+github.com/BlueMedoraPublic/bpcli v1.3.0-beta.0 h1:OahYqy9pE3EWiblCp3fm4hVoFwZMbl52xKXKzkZozCQ=
+github.com/BlueMedoraPublic/bpcli v1.3.0-beta.0/go.mod h1:ArSkYH9iX/+xgc2lj4lVQ3kMgSYbNVVYqQSuVP1a1pk=
 github.com/BlueMedoraPublic/bpcli v1.3.1-alpha h1:fy1eu+1Ex1mC9DgQHnbcfOetf9IXkHpGdpw5Lt0abLo=
 github.com/BlueMedoraPublic/bpcli v1.3.1-alpha/go.mod h1:ArSkYH9iX/+xgc2lj4lVQ3kMgSYbNVVYqQSuVP1a1pk=
 github.com/BlueMedoraPublic/bpcli v1.3.2-alpha h1:KJbqF4w/CQ/40rLYB7OBo9XaaLf9BTXSAjYQCJf8gKs=
@@ -33,6 +35,10 @@ github.com/BlueMedoraPublic/bpcli v1.3.9-alpha h1:NPkURCCTSQ7e0TTgOx6/DFk5pEzqEx
 github.com/BlueMedoraPublic/bpcli v1.3.9-alpha/go.mod h1:iHm+GBHFBgqiPf+nVwRUoHhGLRDe8kB9NNeczxcP330=
 github.com/BlueMedoraPublic/bpcli v1.3.10-alpha h1:L5eL0N1sdLQ+iSGGyHP/xCLJ9M1YIMYrxek8E6F0VqA=
 github.com/BlueMedoraPublic/bpcli v1.3.10-alpha/go.mod h1:ArSkYH9iX/+xgc2lj4lVQ3kMgSYbNVVYqQSuVP1a1pk=
+github.com/BlueMedoraPublic/bpcli v1.3.11-alpha h1:1ZW9pzMi7Z+haHGPpoaK9Kg+I4uvVrHM6pBd1KkROkk=
+github.com/BlueMedoraPublic/bpcli v1.3.11-alpha/go.mod h1:ArSkYH9iX/+xgc2lj4lVQ3kMgSYbNVVYqQSuVP1a1pk=
+github.com/BlueMedoraPublic/bpcli v1.3.12-alpha h1:W8QHc2ctNvSjta20kTngjtLiPifjlYoanMgWpbNR5bI=
+github.com/BlueMedoraPublic/bpcli v1.3.12-alpha/go.mod h1:ArSkYH9iX/+xgc2lj4lVQ3kMgSYbNVVYqQSuVP1a1pk=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/ChrisTrenkamp/goxpath v0.0.0-20170922090931-c385f95c6022/go.mod h1:nuWgzSkT5PnyOd+272uUmV0dnAnAn42Mk7PiQC5VzN4=
 github.com/Unknwon/com v0.0.0-20151008135407-28b053d5a292/go.mod h1:KYCjqMOeHpNuTOiFQU6WEcTG7poCJrUs0YgyHNtn1no=
@@ -189,6 +195,7 @@ github.com/hashicorp/memberlist v0.1.0/go.mod h1:ncdBp14cuox2iFOq3kDiquKU6fqsTBc
 github.com/hashicorp/serf v0.0.0-20160124182025-e4ec8cc423bb/go.mod h1:h/Ru6tmZazX7WO/GDmwdpS975F019L4t5ng5IgwbNrE=
 github.com/hashicorp/terraform v0.12.3 h1:6pdvXmXgUOQDonbwNNQfV113/D6qZ7dt57UJ0Pp6Woc=
 github.com/hashicorp/terraform v0.12.3/go.mod h1:qkOSh7ytFDM6avMkFZErKhE810aB/8J+qhIEt5nRifg=
+github.com/hashicorp/terraform v0.12.21 h1:0qamALIu4/g2+4k4rC5DpxMdLz4A4K67pGQA2X4prgs=
 github.com/hashicorp/terraform-config-inspect v0.0.0-20190327195015-8022a2663a70/go.mod h1:ItvqtvbC3K23FFET62ZwnkwtpbKZm8t8eMcWjmVVjD8=
 github.com/hashicorp/vault v0.10.4/go.mod h1:KfSyffbKxoVyspOdlaGVjIuwLobi07qD1bAbosPMpP0=
 github.com/hashicorp/yamux v0.0.0-20180604194846-3520598351bb h1:b5rjCoWHc7eqmAS4/qyk21ZsHyb6Mxv/jykxvNTkU4M=
