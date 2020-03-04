@@ -94,7 +94,7 @@ data "template_file" "mysql" {
   }
 }
 
-resource "google_compute_instance" "default" {
+resource "google_compute_instance" "mysql" {
   name         = "mysql-tf-${random_id.suffix.hex}"
   machine_type = "g1-small"
   zone         = "us-central1-a"
@@ -114,4 +114,12 @@ resource "google_compute_instance" "default" {
   }
 
   metadata_startup_script = "${data.template_file.mysql.rendered};"
+}
+
+resource "bindplane_log_agent_populate" "mysql" {
+    name = google_compute_instance.mysql.name
+    // wait up to two minutes for the mysql compute
+    // instance to run its metadata startup script, which
+    // performs the install
+    provisioning_timeout = 180
 }
