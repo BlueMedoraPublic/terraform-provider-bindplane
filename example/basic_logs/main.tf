@@ -17,6 +17,11 @@ data "google_secret_manager_secret_version" "bindplane_svc_act" {
   version = 1
 }
 
+// keep resource names random
+resource "random_id" "suffix" {
+  byte_length = 2
+}
+
 /*
 
 bpcli logs destination type parameters \
@@ -24,7 +29,7 @@ bpcli logs destination type parameters \
 
 */
 resource "bindplane_log_destination" "stackdriver" {
-  name = "stackdriver-terraform"
+  name = "stackdriver-tf-${random_id.suffix.hex}"
   destination_type_id = "stackdriver"
   destination_version = "1.3.2"
   configuration = <<CONFIGURATION
@@ -48,7 +53,7 @@ variable "error_log_path" {
 }
 
 resource "bindplane_log_source" "mysql" {
-  name = "mysql-terraform"
+  name = "mysql-tf-${random_id.suffix.hex}"
   source_type_id = "mysql"
   source_version = "2.0.0"
   configuration = <<CONFIGURATION
@@ -65,7 +70,7 @@ CONFIGURATION
 }
 
 resource "bindplane_log_template" "mysql" {
-    name = "template-terraform"
+    name = "template-tf-${random_id.suffix.hex}"
     source_config_ids = [
         bindplane_log_source.mysql.id
     ]
@@ -90,7 +95,7 @@ data "template_file" "mysql" {
 }
 
 resource "google_compute_instance" "default" {
-  name         = "terraform-mysql"
+  name         = "mysql-tf-${random_id.suffix.hex}"
   machine_type = "g1-small"
   zone         = "us-central1-a"
   project      = var.project
