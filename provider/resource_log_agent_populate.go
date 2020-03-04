@@ -1,8 +1,8 @@
 package provider
 
 import (
-	"time"
 	"strings"
+	"time"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 
@@ -14,15 +14,15 @@ func resourceLogAgentPopulate() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceLogAgentCreate,
 		Read:   resourceLogAgentRead,
-		Update:   resourceLogAgentUpdate,
+		Update: resourceLogAgentUpdate,
 		Delete: resourceLogAgentDelete,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
 		Schema: map[string]*schema.Schema{
 			/*
-			do not force new resource if name changes, this is
-			okay as long as we already have the ID in the state
+				do not force new resource if name changes, this is
+				okay as long as we already have the ID in the state
 			*/
 			"name": {
 				Type:     schema.TypeString,
@@ -31,20 +31,20 @@ func resourceLogAgentPopulate() *schema.Resource {
 			},
 
 			/*
-			amount of time to wait for the agent to populate
-			in the ui. resource creation fails if this is set
-			too low
+				amount of time to wait for the agent to populate
+				in the ui. resource creation fails if this is set
+				too low
 			*/
 			"provisioning_timeout": {
-				Type:     schema.TypeInt,
-				Required: true,
-				ForceNew: false,
+				Type:        schema.TypeInt,
+				Required:    true,
+				ForceNew:    false,
 				Description: "time in seconds (30 or higher) to wait for a log agent to deploy",
 			},
 
 			/*
-			values that could change on the api side,
-			do not force replace
+				values that could change on the api side,
+				do not force replace
 			*/
 			"version": {
 				Type:     schema.TypeString,
