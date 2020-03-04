@@ -118,8 +118,7 @@ resource "google_compute_instance" "mysql" {
 
 resource "bindplane_log_agent_populate" "mysql" {
     name = google_compute_instance.mysql.name
-    // wait up to two minutes for the mysql compute
-    // instance to run its metadata startup script, which
-    // performs the install
-    provisioning_timeout = 180
+    // wait for the mysql compute instance to run its metadata
+    // startup script, which performs the agent install
+    provisioning_timeout = 300
 }
