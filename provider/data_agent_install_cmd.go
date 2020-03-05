@@ -42,5 +42,5 @@ func installCmd(platform string) (string, error) {
 	if platform == "all" {
 		return "", errors.New("platform 'all' cannot be used, specify a specific platform")
 	}
-	return bp.InstallCMDLogAgent(platform)
+	return bp.InstallCMDLogAgent(platform, "")
 }
