@@ -3,7 +3,7 @@ module github.com/BlueMedoraPublic/terraform-provider-bindplane
 go 1.14
 
 require (
-	github.com/BlueMedoraPublic/bpcli v1.3.0-beta.0
+	github.com/BlueMedoraPublic/bpcli v1.3.0-beta.1
 	github.com/hashicorp/terraform v0.12.3
 	github.com/pkg/errors v0.8.1
 	golang.org/x/crypto v0.0.0-20190923035154-9ee001bba392 // indirect
