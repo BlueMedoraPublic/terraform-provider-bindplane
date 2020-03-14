@@ -6,6 +6,8 @@
 - [Logs](#logs)
   * [bindplane_log_source](#bindplane-log-source)
   * [bindplane_log_destination](#bindplane-log-destination)
+  * [bindplane_log_bind_source](#bindplane-log-bind-source)
+  * [bindplane_log_bind_destination](#bindplane-log-bind-destination)
   * [bindplane_log_template](#bindplane-log-template)
   * [bindplane_log_agent_populate](#bindplane-log-agent-populate)
   * [bindplane_agent_install_cmd](#bindplane-agent-install-cmd)
@@ -183,6 +185,28 @@ use a secure backend configuration when handling credentials.
 - `examples/basic_logs/eks`
 
 [Terraform Backends](https://www.terraform.io/docs/backends/index.html)
+
+### bindplane_log_bind_source
+
+Source configurations can be deployed to a log agent
+
+```terraform
+resource "bindplane_log_bind_source" "mysql" {
+  source_config_id = bindplane_log_source.mysql.id
+  agent_id         = bindplane_log_agent_populate.mysql.id
+}
+```
+
+### bindplane_log_bind_destination
+
+A Destination configuration can be deployed to a log agent
+
+```terraform
+resource "bindplane_log_bind_destination" "stackdriver" {
+    destination_config_id = bindplane_log_destination.stackdriver.id
+    agent_id              = bindplane_log_agent_populate.mysql.id
+}
+```
 
 ### bindplane_log_template
 
