@@ -20,6 +20,8 @@ func Provider() *schema.Provider {
 			"bindplane_log_destination":    resourceLogDestination(),
 			"bindplane_log_template":       resourceLogTemplate(),
 			"bindplane_log_agent_populate": resourceLogAgentPopulate(),
+			"bindplane_log_bind_source":    resourceLogBindSource(),
+			"bindplane_log_bind_destination": resourceLogBindDestination(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"bindplane_agent_install_cmd": dataSourceAgentInstallCMD(),
