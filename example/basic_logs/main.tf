@@ -69,14 +69,14 @@ resource "bindplane_log_source" "mysql" {
 CONFIGURATION
 }
 
-resource "bindplane_log_template" "mysql" {
+/*resource "bindplane_log_template" "mysql" {
     name = "template-tf-${random_id.suffix.hex}"
     source_config_ids = [
         bindplane_log_source.mysql.id
     ]
     destination_config_id =  bindplane_log_destination.stackdriver.id
     agent_group = ""
-}
+}*/
 
 resource "random_id" "mysql_password" {
   byte_length = 8
@@ -90,7 +90,8 @@ data "template_file" "mysql" {
     mysql_pass = random_id.mysql_password.hex
     company_id = var.company_id
     secret_key = var.secret_key
-    template_id = bindplane_log_template.mysql.id
+    //template_id = bindplane_log_template.mysql.id
+    template_id   = ""
   }
 }
 
@@ -121,4 +122,14 @@ resource "bindplane_log_agent_populate" "mysql" {
     // wait for the mysql compute instance to run its metadata
     // startup script, which performs the agent install
     provisioning_timeout = 300
+}
+
+resource "bindplane_log_bind_source" "mysql" {
+    source_config_id = bindplane_log_source.mysql.id
+    agent_id         = bindplane_log_agent_populate.mysql.id
+}
+
+resource "bindplane_log_bind_destination" "stackdriver" {
+    destination_config_id = bindplane_log_destination.stackdriver.id
+    agent_id              = bindplane_log_agent_populate.mysql.id
 }

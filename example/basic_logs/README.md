@@ -4,8 +4,8 @@
 
 1) define a source config
 2) define a destination config
-3) create a template that is paired with the source and destination config
-4) deploy a compute instance with the log agent pre configured with the log template
+3) deploy a compute instance with and install the log agent
+4) deploy source and destination configs to the log agent
 
 ## setup
 
