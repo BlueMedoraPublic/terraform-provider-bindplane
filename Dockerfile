@@ -1,6 +1,6 @@
 # staging environment retrieves dependencies and compiles
 #
-FROM golang:1.13
+FROM golang:1.14
 
 WORKDIR /terraform-provider-bindplane
 

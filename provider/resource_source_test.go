@@ -12,7 +12,7 @@ import (
 const fakeValidUUID = "abcdefAB-0123-4ABC-ab12-CDEF01234567"
 const fakeValidJSON = "{\"key\":\"value\"}" // important that there are no spaces
 
-func TestinitSource(t *testing.T) {
+func TestInitSource(t *testing.T) {
 	d := makeSchema()
 	x, err := initSource(d)
 	if err != nil {

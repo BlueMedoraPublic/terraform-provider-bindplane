@@ -6,7 +6,7 @@ VERSION := $(shell cat main.go | grep "const version" | cut -c 17- | tr -d '"')
 
 $(shell mkdir -p artifacts)
 
-build: clean fmt
+build: clean
 	$(info building terraform-provider-bindplane ${VERSION})
 
 	@docker build \
@@ -30,7 +30,7 @@ fmt:
 	go fmt ./...
 
 quick:
-	$(shell env CGO_ENABLED=0 go build -a -ldflags '-w -extldflags "-static"')
+	$(shell env CGO_ENABLED=0 go build -ldflags '-w -extldflags "-static"')
 
 clean:
 	$(shell rm -rf artifacts/*)

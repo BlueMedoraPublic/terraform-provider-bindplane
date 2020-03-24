@@ -11,3 +11,5 @@
 artifacts/
 
 terraform-provider-*
+*.log
+env.sh
