@@ -2,19 +2,33 @@ package provider
 
 import (
 	"os"
+	"fmt"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 
 	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/BlueMedoraPublic/bpcli/util/uuid"
+	//"github.com/BlueMedoraPublic/bpcli/util/uuid"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
 
 var bp *sdk.BindPlane
 
+const envAPIKey = "BINDPLANE_API_KEY"
+
 // Provider is the Bindplane Terraform Provider
 func Provider() *schema.Provider {
 	return &schema.Provider{
+		Schema: map[string]*schema.Schema{
+			"api_key": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
+					"BINDPLANE_API_KEY",
+				}, nil),
+				ValidateFunc: validUUID,
+			},
+		},
 		ResourcesMap: map[string]*schema.Resource{
 			"bindplane_credential":           resourceCredential(),
 			"bindplane_source":               resourceSource(),
@@ -34,29 +48,19 @@ func Provider() *schema.Provider {
 }
 
 func initBindplane(d *schema.ResourceData) (interface{}, error) {
-	if err := checkEnv(); err != nil {
-		return nil, errors.Wrap(err, "Not attempting to initilize the bindplane sdk")
-	}
-
 	bp = new(sdk.BindPlane)
+
+	// if env is not set, set it because the sdk
+	// expects it
+	if os.Getenv(envAPIKey) == "" {
+		x := d.Get("api_key").(string)
+		os.Setenv(envAPIKey, x)
+	}
+
 	if err := bp.Init(); err != nil {
-		return d, err
+		return d, errors.Wrap(err, apiKeyRequiredErr().Error())
 	}
-
 	return d, testConnection(bp)
-}
-
-func checkEnv() error {
-	apiKey := os.Getenv("BINDPLANE_API_KEY")
-	if len(apiKey) == 0 {
-		return errors.New("required environment variable BINDPLANE_API_KEY is not set")
-	}
-
-	if uuid.IsUUID(apiKey) == false {
-		return errors.New("required environment variable BINDPLANE_API_KEY is set but does not appear to be a uuid")
-	}
-
-	return nil
 }
 
 func testConnection(bp *sdk.BindPlane) error {
@@ -64,4 +68,22 @@ func testConnection(bp *sdk.BindPlane) error {
 		return errors.Wrap(err, "Test connection failed, could not list jobs. Is the API key correct?")
 	}
 	return nil
+}
+
+func apiKeyRequiredErr() error {
+	return errors.New("BindPlane API Key is not set. You must set the API key in " +
+		"one of the following: BindPlane provider config, BINDPLANE_API_KEY environment " +
+		"variable, or configure '.bpcli' in your home directory.")
+}
+
+func validUUID(v interface{}, k string) (warnings []string, errors []error) {
+	if v == nil || v.(string) == "" {
+		return
+	}
+	value := v.(string)
+	if _, err := uuid.Parse(value); err != nil {
+		errors = append(errors,
+			fmt.Errorf(k + " is not a valid uuid: ", value, err))
+	}
+	return
 }
