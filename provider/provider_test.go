@@ -1,4 +1,4 @@
-package common
+package provider
 
 import (
 	"os"
@@ -6,14 +6,6 @@ import (
 )
 
 const fakeValidUUID = "abcdefAB-0123-4ABC-ab12-CDEF01234567"
-
-func TestNew(t *testing.T) {
-	os.Setenv("BINDPLANE_API_KEY", fakeValidUUID)
-	_, err := New()
-	if err == nil {
-		t.Errorf("Expected New to return a test connection error when using a fake and invalid api key")
-	}
-}
 
 func TestCheckEnvEmpty(t *testing.T) {
 	os.Setenv("BINDPLANE_API_KEY", "")
