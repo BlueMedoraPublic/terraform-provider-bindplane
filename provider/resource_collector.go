@@ -5,8 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/collector"
-
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 )
@@ -44,7 +42,7 @@ with a userdata script for collector deployment
 */
 func resourceCollectorCreate(d *schema.ResourceData, m interface{}) error {
 	name := d.Get("name").(string)
-	id, err := collector.waitForAPI(bp, name)
+	id, err := waitForAPI(bp, name)
 	if err != nil {
 		return errors.Wrap(err, "terraform bindplane_collector resource failed while waiting for collector to appear in bindplane api")
 	}
