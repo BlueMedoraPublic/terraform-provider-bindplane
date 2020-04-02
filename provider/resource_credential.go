@@ -3,8 +3,6 @@ package provider
 import (
 	"strings"
 
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/credential"
-
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -29,16 +27,16 @@ func resourceCredential() *schema.Resource {
 func resourceCredentialCreate(d *schema.ResourceData, m interface{}) error {
 	configuration := d.Get("configuration").(string)
 	payload := []byte(configuration)
-	x, err := credential.Create(payload)
+	x, err := bp.CreateCredential(payload)
 	if err != nil {
 		return err
 	}
-	d.SetId(x)
+	d.SetId(x.ID)
 	return nil
 }
 
 func resourceCredentialRead(d *schema.ResourceData, m interface{}) error {
-	if err := credential.Read(d.Id()); err != nil {
+	if _, err := bp.GetCredential(d.Id()); err != nil {
 		/*
 			It is possible the credential in the tf state does not exist.
 			If this happens, remove it from the tf state by setting
@@ -56,7 +54,7 @@ func resourceCredentialRead(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceCredentialDelete(d *schema.ResourceData, m interface{}) error {
-	if err := credential.Delete(d.Id()); err != nil {
+	if err := bp.DeleteCredential(d.Id()); err != nil {
 		return err
 	}
 	d.SetId("")
