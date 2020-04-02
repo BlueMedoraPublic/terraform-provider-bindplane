@@ -80,7 +80,7 @@ func resourceSourceCreate(d *schema.ResourceData, m interface{}) error {
 		return badTimeoutErr()
 	}
 
-	x, err := source.Create(s, timeout)
+	x, err := source.Create(bp, s, timeout)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func resourceSourceCreate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceSourceRead(d *schema.ResourceData, m interface{}) error {
-	source, err := source.Read(d.Id())
+	source, err := bp.GetSource(d.Id())
 	if err != nil {
 		// remove from state if not exist
 		if strings.Contains(err.Error(), "Target could not be found") {
@@ -130,7 +130,7 @@ func resourceSourceRead(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceSourceDelete(d *schema.ResourceData, m interface{}) error {
-	if err := source.Delete(d.Id()); err != nil {
+	if _, err := bp.DeleteSource(d.Id()); err != nil {
 		return err
 	}
 	d.SetId("")
