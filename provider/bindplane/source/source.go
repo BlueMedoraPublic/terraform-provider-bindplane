@@ -6,8 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/common"
-
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 	"github.com/BlueMedoraPublic/bpcli/util/uuid"
 )
@@ -23,7 +21,7 @@ type Result struct {
 
 // Create attempts to create a source repeatedly until it is
 // created succefully or timeout is exceeded
-func Create(source sdk.SourceConfigCreate, timeout int) (Result, error) {
+func Create(bp *sdk.BindPlane, source sdk.SourceConfigCreate, timeout int) (Result, error) {
 	r := Result{}
 
 	if err := source.Validate(); err != nil {
@@ -33,11 +31,6 @@ func Create(source sdk.SourceConfigCreate, timeout int) (Result, error) {
 	config, err := buildConfig(source)
 	if err != nil {
 		return r, errors.Wrap(err, "Not attempting to create source, buildConfig() failed")
-	}
-
-	bp, err := common.New()
-	if err != nil {
-		return r, errors.Wrap(err, "Not attempting to create source, failed to run sdk.New()")
 	}
 
 	startTime := time.Now().Unix()
@@ -50,7 +43,7 @@ func Create(source sdk.SourceConfigCreate, timeout int) (Result, error) {
 		r.JobID = resp.JobID
 
 		// monitor the job until it finish
-		r.SourceID, err = watchJob(r.JobID)
+		r.SourceID, err = watchJob(bp, r.JobID)
 
 		// if there is an error, try again until timeout reached
 		if err != nil {
@@ -68,36 +61,8 @@ func Create(source sdk.SourceConfigCreate, timeout int) (Result, error) {
 	}
 }
 
-// Read returns a source with a given ID
-func Read(id string) (sdk.SourceConfigGet, error) {
-	bp, err := common.New()
-	if err != nil {
-		return sdk.SourceConfigGet{}, err
-	}
-	return bp.GetSource(id)
-}
-
-// Delete deletes a source
-func Delete(id string) error {
-	bp, err := common.New()
-	if err != nil {
-		return err
-	}
-
-	body, err := bp.DeleteSource(id)
-	if err != nil {
-		return errors.Wrap(err, string(body))
-	}
-	return nil
-}
-
 // returns the sourceID from a completed job
-func watchJob(jobID string) (string, error) {
-	bp, err := common.New()
-	if err != nil {
-		return "", errors.Wrap(err, "Not attempting to monitor job "+jobID)
-	}
-
+func watchJob(bp *sdk.BindPlane, jobID string) (string, error) {
 	for {
 		job, err := bp.GetJob(jobID)
 		if err != nil {
