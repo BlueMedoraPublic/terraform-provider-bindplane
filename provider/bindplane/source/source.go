@@ -11,8 +11,6 @@ import (
 	"github.com/google/uuid"
 )
 
-const testConnectionERR = "test connection error"
-
 // Result describes the response from the bindplane source
 // create api
 type Result struct {
@@ -97,12 +95,6 @@ func parseStatus(job sdk.Job) (bool, error) {
 	} else if status == "queued for completion" {
 		return false, nil
 	} else if status == "failed" {
-
-		jobMsg := strings.ToLower(job.Message)
-		subStr := "test connection failed"
-		if strings.Contains(jobMsg, subStr) == true {
-			return false, errors.New(testConnectionERR)
-		}
 		return false, errors.Wrap(jobErr(job), "job: "+job.ID+" failed. "+job.Message)
 
 	}
