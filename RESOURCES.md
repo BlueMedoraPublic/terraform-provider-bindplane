@@ -6,6 +6,7 @@
 - [Logs](#logs)
   * [bindplane_log_source](#bindplane-log-source)
   * [bindplane_log_destination](#bindplane-log-destination)
+  * [bindplane_log_destination_google](#bindplane-log-destination-google)
   * [bindplane_log_bind_source](#bindplane-log-bind-source)
   * [bindplane_log_bind_destination](#bindplane-log-bind-destination)
   * [bindplane_log_template](#bindplane-log-template)
@@ -149,7 +150,8 @@ CONFIGURATION
 
 Log destination represents a log destination configuration that
 can be paired with a logging agent. One log destination can be used
-for many agents.
+for many agents. This configuration is generic, and will work with all
+current and future log destinations supported by BindPlane.
 
 Log source parameters can be found with bpcli:
 ```
@@ -185,6 +187,19 @@ use a secure backend configuration when handling credentials.
 - `examples/basic_logs/eks`
 
 [Terraform Backends](https://www.terraform.io/docs/backends/index.html)
+
+
+### bindplane_log_destination_google
+
+Google logging destination represents a simplified implementation of `bindplane-log-destination`.
+It sets sane defaults and requires only two parameters.
+
+```terraform
+resource "bindplane_log_destination_google" "default" {
+  name = "google"
+  credentials = data.google_secret_manager_secret_version.bindplane_svc_act.secret_data
+}
+```
 
 ### bindplane_log_bind_source
 
