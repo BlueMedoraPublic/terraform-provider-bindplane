@@ -7,7 +7,8 @@ import (
 	"time"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
-	"github.com/BlueMedoraPublic/bpcli/util/uuid"
+
+	"github.com/google/uuid"
 )
 
 const testConnectionERR = "test connection error"
@@ -122,10 +123,9 @@ func getSourceID(bp *sdk.BindPlane, jobID string) (string, error) {
 	// not safe, could fail if the source was not created
 	id := j.Result.(map[string]interface{})["id"].(string)
 
-	if uuid.IsUUID(id) == false {
-		err := errors.New("uuid.IsUUID returned false when checking job id " + jobID)
-		err = errors.Wrap(err, "getSourceID() may have been given a bad job id")
-		return "", err
+	if _, err := uuid.Parse(id); err != nil {
+		msg := "job id "+id+" is not a valid uuid. This is likey an issue with the provider or BindPlane. Please file an issue on Github."
+		return "", errors.Wrap(err, msg)
 
 	}
 	return id, nil

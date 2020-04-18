@@ -7,7 +7,6 @@ import (
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 
 	"github.com/hashicorp/terraform/helper/schema"
-	//"github.com/BlueMedoraPublic/bpcli/util/uuid"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )

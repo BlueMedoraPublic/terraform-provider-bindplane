@@ -3,7 +3,7 @@ module github.com/BlueMedoraPublic/terraform-provider-bindplane
 go 1.14
 
 require (
-	github.com/BlueMedoraPublic/bpcli v1.3.0-beta.2
+	github.com/BlueMedoraPublic/bpcli v1.3.0
 	github.com/google/uuid v1.1.1
 	github.com/hashicorp/terraform v0.12.3
 	github.com/pkg/errors v0.8.1
