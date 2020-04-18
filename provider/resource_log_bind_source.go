@@ -31,7 +31,7 @@ func resourceLogBindSource() *schema.Resource {
 
 func resourceLogBindSourceCreate(d *schema.ResourceData, m interface{}) error {
 	sourceID := d.Get("source_config_id").(string)
-	agentID  := d.Get("agent_id").(string)
+	agentID := d.Get("agent_id").(string)
 
 	x, err := bp.DeployLogAgentSource(agentID, sourceID)
 	if err != nil {
@@ -44,7 +44,7 @@ func resourceLogBindSourceCreate(d *schema.ResourceData, m interface{}) error {
 
 func resourceLogBindSourceRead(d *schema.ResourceData, m interface{}) error {
 	sourceID := d.Id()
-	agentID  := d.Get("agent_id").(string)
+	agentID := d.Get("agent_id").(string)
 
 	t, err := bp.GetLogAgentSource(agentID, sourceID)
 	if err != nil {
@@ -62,7 +62,7 @@ func resourceLogBindSourceRead(d *schema.ResourceData, m interface{}) error {
 
 func resourceLogBindSourceDelete(d *schema.ResourceData, m interface{}) error {
 	sourceID := d.Id()
-	agentID  := d.Get("agent_id").(string)
+	agentID := d.Get("agent_id").(string)
 
 	if err := bp.DeleteLogAgentSource(agentID, sourceID); err != nil {
 		return err

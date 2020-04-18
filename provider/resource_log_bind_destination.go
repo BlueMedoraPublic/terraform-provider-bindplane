@@ -31,7 +31,7 @@ func resourceLogBindDestination() *schema.Resource {
 
 func resourceLogBindDestCreate(d *schema.ResourceData, m interface{}) error {
 	destID := d.Get("destination_config_id").(string)
-	agentID  := d.Get("agent_id").(string)
+	agentID := d.Get("agent_id").(string)
 
 	x, err := bp.DeployLogAgentDest(agentID, destID)
 	if err != nil {
@@ -44,7 +44,7 @@ func resourceLogBindDestCreate(d *schema.ResourceData, m interface{}) error {
 
 func resourceLogBindDestRead(d *schema.ResourceData, m interface{}) error {
 	destID := d.Id()
-	agentID  := d.Get("agent_id").(string)
+	agentID := d.Get("agent_id").(string)
 
 	t, err := bp.GetLogAgentDest(agentID, destID)
 	if err != nil {
@@ -62,7 +62,7 @@ func resourceLogBindDestRead(d *schema.ResourceData, m interface{}) error {
 
 func resourceLogBindDestDelete(d *schema.ResourceData, m interface{}) error {
 	destID := d.Id()
-	agentID  := d.Get("agent_id").(string)
+	agentID := d.Get("agent_id").(string)
 
 	if err := bp.DeleteLogAgentDest(agentID, destID); err != nil {
 		return err

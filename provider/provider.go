@@ -1,13 +1,13 @@
 package provider
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 
-	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/pkg/errors"
 )
 
@@ -20,8 +20,8 @@ func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
 			"api_key": {
-				Type:         schema.TypeString,
-				Optional:     true,
+				Type:     schema.TypeString,
+				Optional: true,
 				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
 					"BINDPLANE_API_KEY",
 				}, nil),
@@ -82,7 +82,7 @@ func validUUID(v interface{}, k string) (warnings []string, errors []error) {
 	value := v.(string)
 	if _, err := uuid.Parse(value); err != nil {
 		errors = append(errors,
-			fmt.Errorf(k + " is not a valid uuid: ", value, err))
+			fmt.Errorf(k+" is not a valid uuid: ", value, err))
 	}
 	return
 }

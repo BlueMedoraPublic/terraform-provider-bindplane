@@ -116,7 +116,7 @@ func getSourceID(bp *sdk.BindPlane, jobID string) (string, error) {
 	id := j.Result.(map[string]interface{})["id"].(string)
 
 	if _, err := uuid.Parse(id); err != nil {
-		msg := "job id "+id+" is not a valid uuid. This is likey an issue with the provider or BindPlane. Please file an issue on Github."
+		msg := "job id " + id + " is not a valid uuid. This is likey an issue with the provider or BindPlane. Please file an issue on Github."
 		return "", errors.Wrap(err, msg)
 
 	}

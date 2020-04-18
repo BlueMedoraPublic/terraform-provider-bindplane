@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
+	"github.com/hashicorp/terraform/helper/schema"
 )
 
 // Max time to wait for a collector to deploy in seconds
@@ -81,7 +81,6 @@ func resourceCollectorDelete(d *schema.ResourceData, m interface{}) error {
 	}
 	return resourceCollectorRead(d, m)
 }
-
 
 /*
 WaitForAPI checks the BindPlane API every ten seconds
