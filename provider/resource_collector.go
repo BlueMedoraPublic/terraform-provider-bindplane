@@ -49,7 +49,7 @@ func resourceCollectorCreate(d *schema.ResourceData, m interface{}) error {
 
 	d.Set("group", id)
 	d.SetId(id)
-	return nil
+	return resourceCollectorRead(d, m)
 }
 
 // resourceCollectorRead checks to see if a specific collector exists
@@ -79,8 +79,7 @@ func resourceCollectorDelete(d *schema.ResourceData, m interface{}) error {
 	if err := bp.DeleteCollector(id); err != nil {
 		return err
 	}
-	d.SetId("")
-	return nil
+	return resourceCollectorRead(d, m)
 }
 
 

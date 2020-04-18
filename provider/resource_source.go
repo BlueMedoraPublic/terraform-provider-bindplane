@@ -133,8 +133,7 @@ func resourceSourceDelete(d *schema.ResourceData, m interface{}) error {
 	if _, err := bp.DeleteSource(d.Id()); err != nil {
 		return err
 	}
-	d.SetId("")
-	return nil
+	return resourceSourceRead(d, m)
 }
 
 func initSource(d *schema.ResourceData) (sdk.SourceConfigCreate, error) {

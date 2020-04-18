@@ -32,7 +32,7 @@ func resourceCredentialCreate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 	d.SetId(x.ID)
-	return nil
+	return resourceCredentialRead(d, m)
 }
 
 func resourceCredentialRead(d *schema.ResourceData, m interface{}) error {
@@ -57,6 +57,5 @@ func resourceCredentialDelete(d *schema.ResourceData, m interface{}) error {
 	if err := bp.DeleteCredential(d.Id()); err != nil {
 		return err
 	}
-	d.SetId("")
-	return nil
+	return resourceCredentialRead(d, m)
 }
