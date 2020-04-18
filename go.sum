@@ -21,6 +21,8 @@ github.com/BlueMedoraPublic/bpcli v1.3.0-beta.1 h1:7Z0DbDClLKrbApmNVPZmhsLQj0lzp
 github.com/BlueMedoraPublic/bpcli v1.3.0-beta.1/go.mod h1:ArSkYH9iX/+xgc2lj4lVQ3kMgSYbNVVYqQSuVP1a1pk=
 github.com/BlueMedoraPublic/bpcli v1.3.0-beta.2 h1:NbR2zNmZbA+1d/AUnoADKMX0lVqMwZ8U7xKC21ljWic=
 github.com/BlueMedoraPublic/bpcli v1.3.0-beta.2/go.mod h1:ArSkYH9iX/+xgc2lj4lVQ3kMgSYbNVVYqQSuVP1a1pk=
+github.com/BlueMedoraPublic/bpcli v1.3.0 h1:10ucQN0/jPdkTstc9X4EEmUlxb32a6W0xYMCilHa4NM=
+github.com/BlueMedoraPublic/bpcli v1.3.0/go.mod h1:BPPEZAME2hgNDXgmLqT70nvq0MUH85jdNnL1CPnxIrs=
 github.com/BlueMedoraPublic/bpcli v1.3.1-alpha h1:fy1eu+1Ex1mC9DgQHnbcfOetf9IXkHpGdpw5Lt0abLo=
 github.com/BlueMedoraPublic/bpcli v1.3.1-alpha/go.mod h1:ArSkYH9iX/+xgc2lj4lVQ3kMgSYbNVVYqQSuVP1a1pk=
 github.com/BlueMedoraPublic/bpcli v1.3.2-alpha h1:KJbqF4w/CQ/40rLYB7OBo9XaaLf9BTXSAjYQCJf8gKs=
