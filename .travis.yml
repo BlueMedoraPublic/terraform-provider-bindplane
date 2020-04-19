@@ -12,8 +12,5 @@ before_install:
   - export PATH="~/bin:$PATH"
 before_script:
   - go mod download
-deploy:
-- provider: script
-  skip_cleanup: true
-  script:
-    - make test-intigration
+script:
+  - make test-intigration
