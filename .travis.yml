@@ -7,8 +7,8 @@ before_install:
   - mkdir -p ~/bin
   - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
   - curl -sLo /tmp/bpcli.zip https://github.com/BlueMedoraPublic/bpcli/releases/download/v1.3.0/bpcli_linux_amd64.zip
-  - unzip -o -p /tmp/terraform.zip ~/bin/terraform && chmod +x ~/bin/bpcli
-  - unzip -o -p /tmp/bpcli.zip ~/bin/bpcli && chmod +x ~/bin/bpcli
+  - unzip -o -p /tmp/terraform.zip > ~/bin/terraform && chmod +x ~/bin/bpcli
+  - unzip -o -p /tmp/bpcli.zip > ~/bin/bpcli && chmod +x ~/bin/bpcli
   - export PATH="~/bin:$PATH"
 before_script:
   - go mod download
