@@ -20,10 +20,10 @@ build: clean
 	# cleanup
 	@docker rm -fv artifacts &> /dev/null
 
-test-intigration: test build
-	unzip -o -p artifacts/terraform-provider-bindplane_linux_amd64_v${VERSION}.zip > intigration/terraform-provider-bindplane
-	chmod +x intigration/terraform-provider-bindplane
-	bash intigration/test.sh
+test-integration: test build
+	unzip -o -p artifacts/terraform-provider-bindplane_linux_amd64_v${VERSION}.zip > integration/terraform-provider-bindplane
+	chmod +x integration/terraform-provider-bindplane
+	bash integration/test.sh
 
 test:
 	go test ./...

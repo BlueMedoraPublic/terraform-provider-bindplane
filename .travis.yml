@@ -13,4 +13,4 @@ before_install:
 before_script:
   - go mod download
 script:
-  - make test-intigration
+  - make test-integration
