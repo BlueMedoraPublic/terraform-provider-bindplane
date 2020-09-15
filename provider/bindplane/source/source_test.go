@@ -43,7 +43,7 @@ func TestParseStatus(t *testing.T) {
 	)
 
 	j.Status = "complete"
-	x, err = parseStatus(j)
+	x, _, err = parseStatus(j)
 	if x != true {
 		t.Errorf("Expected parseStatus() to return true when job status is 'complete'")
 	}
@@ -52,7 +52,7 @@ func TestParseStatus(t *testing.T) {
 	}
 
 	j.Status = "in progress"
-	x, err = parseStatus(j)
+	x, _, err = parseStatus(j)
 	if x != false {
 		t.Errorf("Expected parseStatus() to return false when job status is 'in progress'")
 	}
@@ -61,7 +61,7 @@ func TestParseStatus(t *testing.T) {
 	}
 
 	j.Status = "testing connection to source"
-	x, err = parseStatus(j)
+	x, _, err = parseStatus(j)
 	if x != false {
 		t.Errorf("Expected parseStatus() to return false when job status is 'testing connection to source'")
 	}
@@ -70,7 +70,7 @@ func TestParseStatus(t *testing.T) {
 	}
 
 	j.Status = "queued for completion"
-	x, err = parseStatus(j)
+	x, _, err = parseStatus(j)
 	if x != false {
 		t.Errorf("Expected parseStatus() to return false when job status is 'queued for completion'")
 	}
@@ -79,7 +79,7 @@ func TestParseStatus(t *testing.T) {
 	}
 
 	j.Status = "failed"
-	x, err = parseStatus(j)
+	x, _, err = parseStatus(j)
 	if x != false {
 		t.Errorf("Expected parseStatus() to return false when job status is 'failed'")
 	}

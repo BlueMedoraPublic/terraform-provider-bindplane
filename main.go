@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform/terraform"
 )
 
-const version = "0.2.3"
+const version = "0.2.4"
 
 func main() {
 	plugin.Serve(&plugin.ServeOpts{
