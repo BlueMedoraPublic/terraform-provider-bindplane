@@ -1,5 +1,10 @@
-provider "bindplane" {
-  source = "BlueMedoraPublic/bindplane"
+terraform {
+  required_providers {
+    bindplane = {
+      source = "BlueMedoraPublic/bindplane"
+      version = "0.2.3"
+    }
+  }
 }
 
 variable "name" {
@@ -17,6 +22,11 @@ variable "collector_id" {
   type        = string
 }
 
+variable "api_server_address" {
+  description = "Hostname or IP addresses of the API server"
+  type        = string
+}
+
 variable "collection_interval" {
   description = "Collection interval (seconds)"
   type        = number
@@ -26,7 +36,7 @@ variable "collection_interval" {
 variable "provisioning_timeout" {
   description = "Max time to wait before timing out the source creation"
   type        = number
-  default     = 120
+  default     = 90
 }
 
 variable "collect_containers" {
@@ -71,21 +81,16 @@ variable "connection_timeout" {
   default     = 30
 }
 
-variable "api_server_address" {
-  description = "Hostname or IP addresses of the API server"
-  type        = string
-}
-
 variable "internal_external_ip_usage" {
   description = "Connect to kubelet using their internal or external address"
   type        = string
-  default     = "internal_ip_address"
+  default     = "internal_ip_addresses"
 }
 
 variable "kubelet_ssl_config" {
   description = "Enable TLS verification against the Kubelet API(s)"
   type        = string
-  default     = "No Verify"
+  default     = "Verify"
 }
 
 variable "max_simultaneous_kubelet_requests" {
@@ -97,7 +102,19 @@ variable "max_simultaneous_kubelet_requests" {
 variable "ssl_config" {
   description = "Enable TLS verification against the API server"
   type        = string
-  default     = "No Verify"
+  default     = "Verify"
+}
+
+variable "api_server_port" {
+  description = "API server's port"
+  type        = string
+  default     = "443"
+}
+
+variable "kubelet_port" {
+  description = "API server's port"
+  type        = string
+  default     = "10250"
 }
 
 locals {
@@ -118,7 +135,7 @@ CONFIGURATION
 
 }
 
-resource "bindplane_source" "postgres_app_db_0" {
+resource "bindplane_source" "kubernetes" {
   name                 = var.name
   source_type          = local.source_type_id
   collector_id         = var.collector_id
@@ -138,8 +155,10 @@ resource "bindplane_source" "postgres_app_db_0" {
   "connection_timeout": ${var.connection_timeout},
   "host": "${var.api_server_address}",
   "internal_external_ip_usage": "${var.internal_external_ip_usage}",
+  "kubelet_port": "${var.kubelet_port}",
   "kubelet_ssl_config": "${var.kubelet_ssl_config}",
   "max_simultaneous_kubelet_requests": ${var.max_simultaneous_kubelet_requests},
+  "port": "${var.api_server_port}",
   "ssl_config": "${var.ssl_config}"
 }
 CONFIGURATION
