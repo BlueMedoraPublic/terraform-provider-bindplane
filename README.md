@@ -30,6 +30,23 @@ See `RESOURCES.md` for more detailed descriptions
 Installation
 ------------
 
+#### Terraform 0.13.x
+
+Add the provider to your Terraform configuration (example: providers.tf).
+Terraform will retrieve the signed release automatically.
+```
+terraform {
+  required_providers {
+    bindplane = {
+      source = "BlueMedoraPublic/bindplane"
+      version = "0.2.4"
+    }
+  }
+}
+```
+
+#### Terraform 0.12.x
+
 1) download the latest release for your platform
 2) unzip the plugin
 3) copy plugin to `~/.terraform.d/plugins` For Mac / Linux and `%APPDATA%\terraform.d\plugins` for Windows

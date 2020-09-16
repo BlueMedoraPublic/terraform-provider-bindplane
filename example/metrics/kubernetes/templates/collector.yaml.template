@@ -1,0 +1,171 @@
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: bluemedora-monitoring
+rules:
+- apiGroups: [""]
+  resources:
+  - nodes
+  - nodes/stats
+  - nodes/spec
+  - nodes/metrics
+  - pods
+  - services
+  - resourcequotas
+  - replicationcontrollers
+  - limitranges
+  - persistentvolumeclaims
+  - persistentvolumes
+  - namespaces
+  - endpoints
+  - events
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["extensions"]
+  resources:
+  - daemonsets
+  - deployments
+  - replicasets
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources:
+  - deployments
+  - statefulsets
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["batch"]
+  resources:
+  - cronjobs
+  - jobs
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["autoscaling"]
+  resources:
+  - horizontalpodautoscalers
+  verbs: ["get", "list", "watch"]
+- nonResourceURLs: ["/healthz", "/healthz/*"]
+  verbs: ["get", "post"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: bluemedora-monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: bluemedora-monitoring
+subjects:
+- kind: ServiceAccount
+  name: bluemedora-monitoring
+  namespace: kube-system
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: kube-system
+  name: bluemedora-monitoring-role
+rules:
+- apiGroups: [""]
+  resources:
+  - pods
+  - nodes
+  verbs: ["get"]
+- apiGroups: ["extensions"]
+  resources:
+  - deployments
+  verbs: ["get"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: bluemedora-monitoring
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: bluemedora-monitoring-role
+subjects:
+- kind: ServiceAccount
+  name: bluemedora-monitoring
+  namespace: kube-system
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: bluemedora-monitoring
+  namespace: kube-system
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bindplane-collector-config
+data:
+  COLLECTOR_NAME: {{.Env.COLLECTOR_NAME}}
+  COLLECTOR_UUID: {{.Env.COLLECTOR_UUID}}
+  COLLECTOR_SECRET_KEY: {{.Env.COLLECTOR_SECRET_KEY}}
+  API_ADDRESS: https://production.api.bindplane.bluemedora.com
+  BINDPLANE_HOME: /opt/bluemedora/bindplane-collector
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    description: BindPlane collector
+  labels:
+    app: bindplane-collector
+    product: bindplane
+  name: collector
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: bindplane-collector
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        description: Collector for bindplane
+      labels:
+        app: bindplane-collector
+        product: bindplane
+      name: bindplane-collector
+    spec:
+      containers:
+      - args:
+        - "/opt/bluemedora/bindplane-collector/scripts/run_collector_in_docker.sh"
+        command:
+        - sh
+        image: docker.io/bluemedora/bindplane-metrics-collector:latest
+        imagePullPolicy: Always
+        name: bindplane-collector
+        resources:
+          limits:
+            memory: "1024Mi"
+        securityContext:
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        envFrom:
+        - configMapRef:
+            name: bindplane-collector-config
+        volumeMounts:
+        - mountPath: /opt/bluemedora/bindplane-collector/tmp
+          name: tmp
+        - mountPath: /opt/bluemedora/bindplane-collector/downloadedPlugins
+          name: downloadedplugins
+        - mountPath: /opt/bluemedora/bindplane-collector/log
+          name: log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: downloadedplugins
+        emptyDir: {}
+      - name: log
+        emptyDir: {}
