@@ -13,3 +13,4 @@ artifacts/
 terraform-provider-*
 *.log
 env.sh
+example/metrics/kubernetes/.env
