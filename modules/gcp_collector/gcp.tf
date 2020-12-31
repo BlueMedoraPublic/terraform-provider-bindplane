@@ -1,9 +1,10 @@
-provider "google" {
-  version = "2.5"
-}
-
-provider "template" {
-  version = "2.1"
+terraform {
+  required_providers {
+    bindplane = {
+      source = "BlueMedoraPublic/bindplane"
+      version = "0.2.4"
+    }
+  }
 }
 
 resource "random_id" "suffix" {

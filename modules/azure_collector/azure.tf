@@ -1,9 +1,10 @@
-provider "azurerm" {
-  version = "1.27"
-}
-
-provider "template" {
-  version = "2.1"
+terraform {
+  required_providers {
+    bindplane = {
+      source = "BlueMedoraPublic/bindplane"
+      version = "0.2.4"
+    }
+  }
 }
 
 resource "random_uuid" "admin_password" {
