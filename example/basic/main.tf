@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    bindplane = {
+      source = "BlueMedoraPublic/bindplane"
+      version = "0.2.4"
+    }
+  }
+}
+
 /*
 
 Deploy a Google Compute Instance and configure Postgres
