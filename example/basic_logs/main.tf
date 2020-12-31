@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    bindplane = {
+      source = "BlueMedoraPublic/bindplane"
+      version = "0.2.4"
+    }
+  }
+}
+
 variable "project" {
   description = "gcp project id"
 }
@@ -10,6 +19,10 @@ variable "secret_key" {
   description = "bindplane secret key"
 }
 
+/**
+1. enable secrets api
+2. create secret `bindplane-service-account` and upload your service account json file
+**/
 data "google_secret_manager_secret_version" "bindplane_svc_act" {
   provider = google-beta
   project = var.project
@@ -69,14 +82,14 @@ resource "bindplane_log_source" "mysql" {
 CONFIGURATION
 }
 
-/*resource "bindplane_log_template" "mysql" {
+resource "bindplane_log_template" "mysql" {
     name = "template-tf-${random_id.suffix.hex}"
     source_config_ids = [
         bindplane_log_source.mysql.id
     ]
     destination_config_id =  bindplane_log_destination.stackdriver.id
     agent_group = ""
-}*/
+}
 
 resource "random_id" "mysql_password" {
   byte_length = 8
