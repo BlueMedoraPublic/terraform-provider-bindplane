@@ -54,18 +54,20 @@ func resourceCollectorCreate(d *schema.ResourceData, m interface{}) error {
 
 // resourceCollectorRead checks to see if a specific collector exists
 func resourceCollectorRead(d *schema.ResourceData, m interface{}) error {
-	if _, err := bp.GetCollector(d.Id()); err != nil {
-		/*
-			It is possible the collector in the tf state does not exist.
-			If this happens, remove it from the tf state by setting
-			it's id to ""
-		*/
-		if strings.Contains(err.Error(), "could not be found") {
+	const notFound = "could not be found"
+
+	collector, err := bp.GetCollector(d.Id())
+	if err != nil {
+		if strings.Contains(err.Error(), notFound) {
 			d.SetId("")
 			return nil
 		}
 		return err
 	}
+
+	d.Set("group", collector.ID)
+	d.Set("name", collector.Name)
+
 	return nil
 }
 
