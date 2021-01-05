@@ -2,7 +2,6 @@ package provider
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 
@@ -50,16 +49,14 @@ func Provider() *schema.Provider {
 func initBindplane(d *schema.ResourceData) (interface{}, error) {
 	bp = new(sdk.BindPlane)
 
-	// if env is not set, set it because the sdk
-	// expects it
-	if os.Getenv(envAPIKey) == "" {
-		x := d.Get("api_key").(string)
-		os.Setenv(envAPIKey, x)
+	if d.Get("api_key").(string) == "" {
+		return d, apiKeyRequiredErr()
 	}
 
 	if err := bp.Init(); err != nil {
-		return d, errors.Wrap(err, apiKeyRequiredErr().Error())
+		return d, err
 	}
+
 	return d, testConnection(bp)
 }
 
