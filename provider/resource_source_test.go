@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
-
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
@@ -49,24 +47,6 @@ func TestInitSource(t *testing.T) {
 	}
 }
 
-func TestConfDiff(t *testing.T) {
-	d := makeSchema()
-	s, err := makeinitSource()
-	if err != nil {
-		t.Errorf(err.Error())
-		return
-	}
-	x, err := confDiff(d, s)
-	if err != nil {
-		t.Errorf("Expected confDiff to return a nil error, got: " + err.Error())
-		return
-	}
-
-	if x != true {
-		t.Errorf("Expected confDiff to return true, got false, despite the state and config struct being identical")
-	}
-}
-
 func makeSchema() *schema.ResourceData {
 	r := resourceSource()
 	d := r.Data(nil)
@@ -77,18 +57,4 @@ func makeSchema() *schema.ResourceData {
 	d.Set("credential_id", fakeValidUUID)
 	d.Set("configuration", fakeValidJSON)
 	return d
-}
-
-func makeinitSource() (sdk.SourceConfigGet, error) {
-	x := sdk.SourceConfigGet{}
-	x.CollectionInterval = 20
-	x.Collector.ID = fakeValidUUID
-	x.Name = "abc"
-	x.SourceType.Name = "abc"
-	x.Credentials = append(x.Credentials, sdk.Credential{ID: fakeValidUUID})
-
-	// error is not checked because it will be checked by
-	// the function caller
-	err := json.Unmarshal([]byte(fakeValidJSON), &x.Configuration)
-	return x, err
 }

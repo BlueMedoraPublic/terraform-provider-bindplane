@@ -4,10 +4,11 @@ import (
 	"github.com/pkg/errors"
 	"strconv"
 	"strings"
+	"reflect"
+	"encoding/json"
 
 	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/bindplane/source"
 	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/util/jsonutil"
-	"github.com/BlueMedoraPublic/terraform-provider-bindplane/provider/util/trim"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
 	"github.com/hashicorp/terraform/helper/schema"
@@ -91,25 +92,23 @@ func resourceSourceCreate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceSourceRead(d *schema.ResourceData, m interface{}) error {
+	const notFound = "Target could not be found"
+
 	source, err := bp.GetSource(d.Id())
 	if err != nil {
-		// remove from state if not exist
-		if strings.Contains(err.Error(), "Target could not be found") {
+		if strings.Contains(err.Error(), notFound) {
 			d.SetId("")
 			return nil
 		}
 		return err
 	}
 
-	/*
-	  if the state source configuration is different from
-	  the configuration returned by the API, force the source
-	  to be rebuild
-	*/
-	c, err := confDiff(d, source)
+	identical, err := sourceCompare(source, d.Get("configuration").(string))
 	if err != nil {
 		return err
-	} else if c == false {
+	}
+
+	if ! identical {
 		d.Set("configuration", "")
 	}
 
@@ -118,8 +117,10 @@ func resourceSourceRead(d *schema.ResourceData, m interface{}) error {
 	d.Set("name", source.Name)
 	d.Set("source_type", source.SourceType.ID)
 
-	// some sources will not havea a credential, which will
-	// cause terraform to panic if we skip this check
+	// TODO: Credentials should probably be an array, however, it is unlikely
+	// that a source will have multiple credentials attached. This will require
+	// a schema change, meaning the next major release of this provider will include
+	// this improvement
 	if len(source.Credentials) > 0 {
 		d.Set("credential_id", source.Credentials[0].ID)
 	} else {
@@ -152,25 +153,12 @@ func initSource(d *schema.ResourceData) (sdk.SourceConfigCreate, error) {
 	return s, nil
 }
 
-// returns true if api and state source configurations are equal
-func confDiff(d *schema.ResourceData, s sdk.SourceConfigGet) (bool, error) {
-	// api response as bytes
-	apiConf, err := jsonutil.InterfaceToJSONBytes(s.Configuration)
-	if err != nil {
+func sourceCompare(remote sdk.SourceConfigGet, local string) (bool, error) {
+	configuration := make(map[string]interface{})
+	if err := json.Unmarshal([]byte(local), &configuration); err != nil {
 		return false, err
 	}
-
-	// force the source to rebuild if state differs from api
-	// response
-	stateConf, err := trim.Trim(d.Get("configuration").(string))
-	if err != nil {
-		return false, err
-	}
-
-	if string(apiConf) != stateConf {
-		return false, nil
-	}
-	return true, nil
+	return reflect.DeepEqual(remote.Configuration, configuration), nil
 }
 
 func timeout(d *schema.ResourceData) int {
