@@ -84,6 +84,7 @@ docker_bindplane_collector () {
         else
             echo "could not find collector ${UNIX_TIME} with UUID ${COLLECTOR_UUID} after 60 seconds"
             clean
+            exit 1
         fi
     done
 }
