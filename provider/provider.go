@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"os"
 	"fmt"
 
 	"github.com/BlueMedoraPublic/bpcli/bindplane/sdk"
@@ -22,7 +23,7 @@ func Provider() *schema.Provider {
 				Type:     schema.TypeString,
 				Optional: true,
 				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"BINDPLANE_API_KEY",
+					envAPIKey,
 				}, nil),
 				ValidateFunc: validUUID,
 			},
@@ -51,6 +52,12 @@ func initBindplane(d *schema.ResourceData) (interface{}, error) {
 
 	if d.Get("api_key").(string) == "" {
 		return d, apiKeyRequiredErr()
+	}
+
+	// bp.Init() requires the environment to be set. Set it if the provider
+	// configuration api_key is used instead of an environment variable
+	if os.Getenv(envAPIKey) == "" {
+		os.Setenv(envAPIKey, d.Get("api_key").(string))
 	}
 
 	if err := bp.Init(); err != nil {
